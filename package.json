@@ -1,0 +1,24 @@
+{
+  "name": "nodejs-express-microservice",
+  "version": "1.0.0",
+  "description": "Microservices with Express and MongoDB",
+  "main": "index.js",
+  "scripts": {
+    "start:inventory": "node --watch --env-file=apps/inventory-service/.env apps/inventory-service/src/index.js",
+    "start:order": "node --watch --env-file=apps/order-service/.env apps/order-service/src/index.js",
+    "start:all": "concurrently \"npm run start:inventory\" \"npm run start:order\""
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.0.0",
+    "cors": "^2.8.5",
+    "@grpc/grpc-js": "^1.9.0",
+    "@grpc/proto-loader": "^0.7.8"
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.1"
+  }
+}

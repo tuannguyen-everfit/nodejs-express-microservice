@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package inventory;
+
+service InventoryService {
+  rpc CheckStock (CheckStockRequest) returns (CheckStockResponse);
+  rpc DeductStock (DeductStockRequest) returns (DeductStockResponse);
+}
+
+message CheckStockRequest {
+  string productId = 1;
+  int32 quantity = 2;
+}
+
+message CheckStockResponse {
+  bool isAvailable = 1;
+  int32 currentStock = 2;
+}
+
+message DeductStockRequest {
+  string productId = 1;
+  int32 quantity = 2;
+}
+
+message DeductStockResponse {
+  bool success = 1;
+  string message = 2;
+}
+

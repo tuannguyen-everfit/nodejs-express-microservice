@@ -1,0 +1,54 @@
+### Variables
+@inventoryApi = http://localhost:3001
+@orderApi = http://localhost:3002
+
+############################################################
+# INVENTORY SERVICE (Port 3001)
+############################################################
+
+### 1. Create a new Product
+# @name createProduct
+POST {{inventoryApi}}/products
+Content-Type: application/json
+
+{
+    "name": "Laptop Pro",
+    "price": 1200,
+    "stock": 10
+}
+
+### 2. Get all Products
+GET {{inventoryApi}}/products
+
+############################################################
+# ORDER SERVICE (Port 3002)
+############################################################
+
+### 3. Create a new Order
+# Processing flow: Order Service calls gRPC to Inventory Service to check and deduct stock
+# @name createOrder
+POST {{orderApi}}/orders
+Content-Type: application/json
+
+{
+    "productId": "{{createProduct.response.body._id}}",
+    "quantity": 2,
+    "pricePerUnit": 1200
+}
+
+### 4. Get Order by ID
+@orderId = {{createOrder.response.body._id}}
+GET {{orderApi}}/orders/{{orderId}}
+
+### 5. Check stock again after Order (Stock should decrease from 10 to 8)
+GET {{inventoryApi}}/products
+
+### 6. Try to create an Order with quantity exceeding stock (Should return Insufficient stock error)
+POST {{orderApi}}/orders
+Content-Type: application/json
+
+{
+    "productId": "{{createProduct.response.body._id}}",
+    "quantity": 100,
+    "pricePerUnit": 1200
+}
