@@ -6,7 +6,8 @@
   "scripts": {
     "start:inventory": "node --watch --env-file=apps/inventory-service/.env apps/inventory-service/src/index.js",
     "start:order": "node --watch --env-file=apps/order-service/.env apps/order-service/src/index.js",
-    "start:all": "concurrently \"npm run start:inventory\" \"npm run start:order\""
+    "start:payment": "node --watch --env-file=apps/payment-service/.env apps/payment-service/src/index.js",
+    "start:all": "concurrently \"npm run start:inventory\" \"npm run start:order\" \"npm run start:payment\""
   },
   "engines": {
     "node": ">=22"

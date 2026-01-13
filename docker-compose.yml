@@ -37,9 +37,25 @@ services:
       - MONGO_URI=mongodb://mongodb:27017/order_db
       - PORT=3002
       - GRPC_INVENTORY_SERVICE_ADDR=inventory-service:50053
+      - GRPC_PAYMENT_SERVICE_ADDR=payment-service:50054
     depends_on:
       - mongodb
       - inventory-service
+
+  payment-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: node --watch apps/payment-service/src/index.js
+    ports:
+      - "50054:50054"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - GRPC_PORT=50054
+    depends_on:
+      - mongodb
 
 volumes:
   mongo_data:
