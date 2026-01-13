@@ -1,5 +1,5 @@
-const grpc = require('@grpc/grpc-js');
 const productService = require('../modules/product/product-service');
+const { mapToGrpcError } = require('../../../../shares/grpc/error-mapper');
 
 const checkStock = async (call, callback) => {
   try {
@@ -7,10 +7,7 @@ const checkStock = async (call, callback) => {
     const result = await productService.checkStock(productId, quantity);
     callback(null, result);
   } catch (error) {
-    callback({
-      code: grpc.status.INTERNAL,
-      details: error.message,
-    });
+    callback(mapToGrpcError(error));
   }
 };
 
@@ -20,10 +17,7 @@ const deductStock = async (call, callback) => {
     const result = await productService.deductStock(productId, quantity);
     callback(null, result);
   } catch (error) {
-    callback({
-      code: grpc.status.INTERNAL,
-      details: error.message,
-    });
+    callback(mapToGrpcError(error));
   }
 };
 
